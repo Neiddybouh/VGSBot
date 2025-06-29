@@ -509,10 +509,11 @@ async def autocomplete_equipements(interaction: discord.Interaction, current: st
     disponibles = inventaire_chateau[equipe]["disponibles"]
 
     return [
-        app_commands.Choice(name=emoji.strip(":"), value=emoji.strip(":"))
+        app_commands.Choice(name=emoji, value=emoji)
         for emoji in disponibles
         if current.lower() in emoji.lower()
     ]
+
 
 
 
@@ -708,7 +709,7 @@ async def victory(interaction: discord.Interaction, equipe: str, boss: str):
 @app_commands.checks.has_permissions(administrator=True)
 async def equip(interaction: discord.Interaction, equipe: str, objet: str):
     team = equipe.lower()
-    objet = f":{objet.strip(':')}:"  # reformate l'emoji
+    objet = objet.strip()
 
     if team not in inventaire_chateau:
         await interaction.response.send_message("🚫 Équipe inconnue.", ephemeral=True)
