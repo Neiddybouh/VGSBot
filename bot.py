@@ -497,7 +497,6 @@ async def autocomplete_boss(interaction: discord.Interaction, current: str):
     ]
 
 async def autocomplete_equipements(interaction: discord.Interaction, current: str):
-    # Vérifie que l'équipe est déjà fournie dans le champ autocomplete
     if not hasattr(interaction.namespace, "equipe"):
         return []
 
@@ -513,6 +512,7 @@ async def autocomplete_equipements(interaction: discord.Interaction, current: st
         for emoji in disponibles
         if current.lower() in emoji.lower()
     ]
+
 
 
 
@@ -703,22 +703,23 @@ async def victory(interaction: discord.Interaction, equipe: str, boss: str):
 
 
 @bot.tree.command(name="equip", description="Change l'équipement actif d'une équipe.")
-@app_commands.describe(equipe="Nom de l'équipe", objet="Nom de l'équipement (emoji)")
+@app_commands.describe(equipe="Nom de l'équipe", objet="Nom de l'équipement (emoji complet)")
 @app_commands.autocomplete(equipe=autocomplete_equipes, objet=autocomplete_equipements)
 @app_commands.default_permissions(administrator=True)
 @app_commands.checks.has_permissions(administrator=True)
 async def equip(interaction: discord.Interaction, equipe: str, objet: str):
     team = equipe.lower()
-    objet = objet.strip()
 
     if team not in inventaire_chateau:
         await interaction.response.send_message("🚫 Équipe inconnue.", ephemeral=True)
         return
 
+    # Vérifie que l’objet est bien dans les équipements disponibles
     if objet not in inventaire_chateau[team]["disponibles"]:
-        await interaction.response.send_message("🚫 Objet non disponible dans l'inventaire.", ephemeral=True)
+        await interaction.response.send_message(f"🚫 Objet {objet} non disponible dans l'inventaire.", ephemeral=True)
         return
 
+    # Déplacement entre les listes
     ancien = inventaire_chateau[team]["actif"]
     inventaire_chateau[team]["actif"] = [objet]
 
