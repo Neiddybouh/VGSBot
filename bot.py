@@ -114,7 +114,7 @@ boss_data = {
         "nom": "Princes Jumeaux",
         "pv": "1500 PV & 1000",
         "effet": (
-            "Le premier Prince vous fait perdre 2% de points toutes les heures. "
+            "Le premier Prince vous fait perdre 2% de points toutes les 3 heures. "
             "Le second vous offre un objet aléatoire à chaque fois que vous prenez des dégâts. "
             "Une fois le premier vaincu, plus de dégâts ni objets, mais vous devez battre le second pour obtenir la récompense."
         ),
@@ -224,12 +224,12 @@ format_tp = CellFormat(backgroundColor=color(0.50, 0.38, 0), textFormat=TextForm
 
 # Positions initiales
 positions = {
-    "mha": "A1",
-    "pkvt": "H1",
+    "mha": "D14",
+    "pkvt": "F4",
     "patp": "O1",
-    "unk": "A15",
-    "smc": "H15",
-    "rclg": "O15"
+    "unk": "F15",
+    "smc": "E12",
+    "rclg": "K15"
 }
 
 def cell_to_coords(cell) :
@@ -559,7 +559,7 @@ async def move(interaction: discord.Interaction, equipe: str, case: str):
     resultat = await move_equipe(team, destination, forcer=True, send_to_channel=team_channel)
 
     # Message dans le salon admin (celui où la commande a été exécutée)
-    await interaction.followup.send(f"✅ {team.upper()} déplacé vers {destination} : Ce déplacement a couté 25 PM, n'oublie pas de les enlever de l'inventaire.")
+    await interaction.followup.send(f"✅ {team.upper()} déplacé vers {destination} : Ce déplacement a couté 15 PM, n'oublie pas de les enlever de l'inventaire. 25 pour la patpitrouille <:kappa:485902802154029066>")
 
     # Message dans le salon de l’équipe concernée
     await team_channel.send(resultat)
